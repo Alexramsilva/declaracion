@@ -20,7 +20,7 @@ st.set_page_config(
 st.title("Asistente DECLARANET para inversionista GBM del Sector Público Federal")
 
 st.write(
-    "Sube constancias fiscales de GBM o CETES"
+    "Sube tus constancias de información fiscal de GBM"
 )
 
 # ---------------------------------------------------
