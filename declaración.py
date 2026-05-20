@@ -12,11 +12,11 @@ from openai import OpenAI
 # ---------------------------------------------------
 
 st.set_page_config(
-    page_title="Asistente Fiscal SAT",
+    page_title="Asistente DECLARANET para inversionista GBM del sector público federal",
     layout="wide"
 )
 
-st.title("📄 Asistente Fiscal SAT")
+st.title("Asistente DECLARANET para inversionista GBM del Sector Público Federal")
 
 st.write(
     "Sube constancias fiscales de GBM o CETES"
