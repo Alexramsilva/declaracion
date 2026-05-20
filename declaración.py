@@ -111,7 +111,7 @@ if api_key:
         - Dividendos Pagados Extranjeras (SIC)
         - Impuesto Retenido en el Extranjero
 
-        Clasifica cada concepto para DECLARANET
+        Clasifica cada concepto, despues de impuestos, para DECLARANET
         utilizando SOLAMENTE una de las siguientes categorías:
 
         - Capital
