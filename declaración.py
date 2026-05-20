@@ -10,6 +10,7 @@ from openai import OpenAI
 # ---------------------------------------------------
 # CONFIG STREAMLIT
 # ---------------------------------------------------
+st.image("UNRC.png", caption="Universidad Nacional Rosario Castellanos", width=300)
 
 st.set_page_config(
     page_title="Asistente DECLARANET para inversionista GBM del sector público federal",
