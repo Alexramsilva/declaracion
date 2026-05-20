@@ -1,6 +1,4 @@
 streamlit
+openai
+pdfplumber
 pandas
-numpy
-matplotlib
-scikit-learn
-tensorflow
