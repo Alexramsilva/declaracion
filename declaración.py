@@ -77,50 +77,93 @@ if api_key:
 
     def analizar_constancia(texto):
 
-        prompt = f"""
-        Analiza la siguiente constancia fiscal mexicana.
+   prompt = f"""
+Analiza la siguiente constancia fiscal mexicana emitida por GBM o casa de bolsa.
 
-        Extrae:
+Extrae EXACTAMENTE los siguientes conceptos:
 
-        - ACCIONES: Ganancias
-        - ACCIONES: Pérdidas
-        - ACCIONES: Resultado Neto
-        - FIBRAS: Resultado	Fiscal Distribuido	por	Fibras
-        - FIBRAS: ISR	Retenido Acreditable	por	Fibras 
-        - DIVIDENDOS NACIONALES: Dividendos	Pagados
-        - DIVIDENDOS NACIONALES: ISR Acreditable por Dividendos
-        - DIVIDENDOS EXTRANJEROS: Dividendos Pagados Extranjeras (SIC)
-        - DIVIDENDOS EXTRANJEROS: Impuesto	Retenido en	el Extranjero
+ACCIONES
+- Ganancias
+- Pérdidas
+- Resultado Neto
 
-        Clasifica para declaración de DECLARANET (después de impuestos) en:
-        - Capital
-        - Valores Búrsátiles
-        - Bonos
+INTERESES
+- Interés Nominal Gravado
+- Interés Nominal Exento
+- Total de Interés Nominal
+- Interés Real Gravado
+- Pérdida Real por Intereses
+- ISR Retenido Acreditable
 
-        Devuelve SOLO JSON válido.
+FIBRAS
+- Resultado Fiscal Distribuido por Fibras
+- ISR Retenido Acreditable por Fibras
+- Ganancia Inmuebles Fideicomitidos
+- ISR Pagado por la Fiduciaria (FIBRAS)
+- Reembolso de Capital
 
-        Formato:
+DIVIDENDOS NACIONALES
+- Dividendos Pagados
+- Dividendos Acumulables
+- ISR Acreditable por Dividendos
 
+DIVIDENDOS EXTRANJEROS
+- Dividendos Pagados Extranjeras (SIC)
+- Impuesto Retenido en el Extranjero
+
+Clasifica cada concepto para DECLARANET (después de impuestos)
+utilizando SOLAMENTE una de las siguientes categorías:
+
+- Capital
+- Valores Bursátiles
+- Bonos
+
+Reglas importantes:
+
+- Resultado Neto de acciones -> Valores Bursátiles
+- Intereses -> Bonos
+- FIBRAS -> Valores Bursátiles
+- Dividendos -> Capital
+- Reembolso de Capital -> Capital
+- ISR acreditable debe conservarse como acreditable
+- Si un concepto no existe, usar 0
+- Todos los montos deben ser numéricos
+- No agregar texto fuera del JSON
+
+Devuelve SOLO JSON válido.
+
+Formato EXACTO:
+
+{{
+    "conceptos":[
         {{
-            "conceptos":[
-                {{
-                    "concepto":"Interés Real",
-                    "monto":4226.54,
-                    "tratamiento":"acumulable"
-                }}
-            ],
-            "resumen": {{
-                "Capital": 0,
-                "Valores Bursátiles": 0,
-                "Bonos": 0
-            }}
+            "categoria":"Valores Bursátiles",
+            "concepto":"Resultado Neto",
+            "monto":840.12,
+            "tipo":"acumulable"
+        }},
+        {{
+            "categoria":"Bonos",
+            "concepto":"ISR Retenido Acreditable",
+            "monto":2.21,
+            "tipo":"acreditable"
         }}
+    ],
 
-        CONSTANCIA:
+    "resumen": {{
+        "Capital": 0,
+        "Valores Bursátiles": 0,
+        "Bonos": 0
+    }}
+}}
 
-        {texto}
-        """
+La sección "resumen" debe sumar únicamente montos acumulables
+por categoría.
 
+CONSTANCIA:
+
+{texto}
+"""
         response = client.chat.completions.create(
             model="gpt-4.1-mini",
             messages=[
