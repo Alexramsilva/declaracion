@@ -42,14 +42,14 @@ if api_key:
         api_key=api_key
     )
 
-    st.success("API Key cargada correctamente")
+    st.success("API Key cargada correctamente, sigue adelñante.")
 
     # ---------------------------------------------------
     # SUBIR PDF
     # ---------------------------------------------------
 
     uploaded_file = st.file_uploader(
-        "Sube tu constancia PDF",
+        "Sube tu constancia de información fiscal PDF",
         type=["pdf"]
     )
 
@@ -216,7 +216,7 @@ if api_key:
 
                 resultado = analizar_constancia(texto_pdf)
 
-            st.subheader("📊 Resultado Fiscal")
+            st.subheader("Resultado Fiscal")
 
             try:
 
