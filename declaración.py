@@ -20,7 +20,7 @@ from openai import OpenAI
 # -----------------------------------
 
 client = OpenAI(
-    api_key="TU_API_KEY_OPENAI"
+    api_key=""
 )
 
 # -----------------------------------
