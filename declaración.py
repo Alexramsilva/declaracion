@@ -7,9 +7,9 @@ import json
 
 from openai import OpenAI
 
-# -----------------------------------
+# ---------------------------------------------------
 # CONFIG STREAMLIT
-# -----------------------------------
+# ---------------------------------------------------
 
 st.set_page_config(
     page_title="Asistente Fiscal SAT",
@@ -19,21 +19,21 @@ st.set_page_config(
 st.title("📄 Asistente Fiscal SAT")
 
 st.write(
-    "Sube constancias fiscales de CETES Directo o GBM"
+    "Sube constancias fiscales de GBM o CETES"
 )
 
-# -----------------------------------
-# API KEY INPUT
-# -----------------------------------
+# ---------------------------------------------------
+# API KEY
+# ---------------------------------------------------
 
 api_key = st.text_input(
     "Ingresa tu OpenAI API Key",
     type="password"
 )
 
-# -----------------------------------
-# VALIDAR API KEY
-# -----------------------------------
+# ---------------------------------------------------
+# VALIDAR API
+# ---------------------------------------------------
 
 if api_key:
 
@@ -43,18 +43,18 @@ if api_key:
 
     st.success("API Key cargada correctamente")
 
-    # -----------------------------------
+    # ---------------------------------------------------
     # SUBIR PDF
-    # -----------------------------------
+    # ---------------------------------------------------
 
     uploaded_file = st.file_uploader(
         "Sube tu constancia PDF",
         type=["pdf"]
     )
 
-    # -----------------------------------
+    # ---------------------------------------------------
     # EXTRAER TEXTO PDF
-    # -----------------------------------
+    # ---------------------------------------------------
 
     def extraer_texto_pdf(pdf_file):
 
@@ -71,99 +71,100 @@ if api_key:
 
         return texto
 
-    # -----------------------------------
+    # ---------------------------------------------------
     # ANALIZAR CONSTANCIA
-    # -----------------------------------
+    # ---------------------------------------------------
 
     def analizar_constancia(texto):
 
-   prompt = f"""
-Analiza la siguiente constancia fiscal mexicana emitida por GBM o casa de bolsa.
+        prompt = f"""
+        Analiza la siguiente constancia fiscal mexicana emitida por GBM o casa de bolsa.
 
-Extrae EXACTAMENTE los siguientes conceptos:
+        Extrae EXACTAMENTE los siguientes conceptos:
 
-ACCIONES
-- Ganancias
-- Pérdidas
-- Resultado Neto
+        ACCIONES
+        - Ganancias
+        - Pérdidas
+        - Resultado Neto
 
-INTERESES
-- Interés Nominal Gravado
-- Interés Nominal Exento
-- Total de Interés Nominal
-- Interés Real Gravado
-- Pérdida Real por Intereses
-- ISR Retenido Acreditable
+        INTERESES
+        - Interés Nominal Gravado
+        - Interés Nominal Exento
+        - Total de Interés Nominal
+        - Interés Real Gravado
+        - Pérdida Real por Intereses
+        - ISR Retenido Acreditable
 
-FIBRAS
-- Resultado Fiscal Distribuido por Fibras
-- ISR Retenido Acreditable por Fibras
-- Ganancia Inmuebles Fideicomitidos
-- ISR Pagado por la Fiduciaria (FIBRAS)
-- Reembolso de Capital
+        FIBRAS
+        - Resultado Fiscal Distribuido por Fibras
+        - ISR Retenido Acreditable por Fibras
+        - Ganancia Inmuebles Fideicomitidos
+        - ISR Pagado por la Fiduciaria (FIBRAS)
+        - Reembolso de Capital
 
-DIVIDENDOS NACIONALES
-- Dividendos Pagados
-- Dividendos Acumulables
-- ISR Acreditable por Dividendos
+        DIVIDENDOS NACIONALES
+        - Dividendos Pagados
+        - Dividendos Acumulables
+        - ISR Acreditable por Dividendos
 
-DIVIDENDOS EXTRANJEROS
-- Dividendos Pagados Extranjeras (SIC)
-- Impuesto Retenido en el Extranjero
+        DIVIDENDOS EXTRANJEROS
+        - Dividendos Pagados Extranjeras (SIC)
+        - Impuesto Retenido en el Extranjero
 
-Clasifica cada concepto para DECLARANET (después de impuestos)
-utilizando SOLAMENTE una de las siguientes categorías:
+        Clasifica cada concepto para DECLARANET
+        utilizando SOLAMENTE una de las siguientes categorías:
 
-- Capital
-- Valores Bursátiles
-- Bonos
+        - Capital
+        - Valores Bursátiles
+        - Bonos
 
-Reglas importantes:
+        Reglas importantes:
 
-- Resultado Neto de acciones -> Valores Bursátiles
-- Intereses -> Bonos
-- FIBRAS -> Valores Bursátiles
-- Dividendos -> Capital
-- Reembolso de Capital -> Capital
-- ISR acreditable debe conservarse como acreditable
-- Si un concepto no existe, usar 0
-- Todos los montos deben ser numéricos
-- No agregar texto fuera del JSON
+        - Resultado Neto de acciones -> Valores Bursátiles
+        - Intereses -> Bonos
+        - FIBRAS -> Valores Bursátiles
+        - Dividendos -> Capital
+        - Reembolso de Capital -> Capital
+        - ISR acreditable debe conservarse como acreditable
+        - Si un concepto no existe, usar 0
+        - Todos los montos deben ser numéricos
+        - No agregar texto fuera del JSON
 
-Devuelve SOLO JSON válido.
+        Devuelve SOLO JSON válido.
 
-Formato EXACTO:
+        Formato EXACTO:
 
-{{
-    "conceptos":[
         {{
-            "categoria":"Valores Bursátiles",
-            "concepto":"Resultado Neto",
-            "monto":840.12,
-            "tipo":"acumulable"
-        }},
-        {{
-            "categoria":"Bonos",
-            "concepto":"ISR Retenido Acreditable",
-            "monto":2.21,
-            "tipo":"acreditable"
+            "conceptos":[
+                {{
+                    "categoria":"Valores Bursátiles",
+                    "concepto":"Resultado Neto",
+                    "monto":840.12,
+                    "tipo":"acumulable"
+                }},
+                {{
+                    "categoria":"Bonos",
+                    "concepto":"ISR Retenido Acreditable",
+                    "monto":2.21,
+                    "tipo":"acreditable"
+                }}
+            ],
+
+            "resumen": {{
+                "Capital": 0,
+                "Valores Bursátiles": 0,
+                "Bonos": 0
+            }}
         }}
-    ],
 
-    "resumen": {{
-        "Capital": 0,
-        "Valores Bursátiles": 0,
-        "Bonos": 0
-    }}
-}}
+        La sección "resumen" debe sumar únicamente montos acumulables
+        por categoría.
 
-La sección "resumen" debe sumar únicamente montos acumulables
-por categoría.
+        CONSTANCIA:
 
-CONSTANCIA:
+        {texto}
+        """
 
-{texto}
-"""
         response = client.chat.completions.create(
             model="gpt-4.1-mini",
             messages=[
@@ -171,7 +172,7 @@ CONSTANCIA:
                     "role": "system",
                     "content": (
                         "Eres un experto fiscal mexicano "
-                        "especializado en SAT, CETES, GBM y FIBRAS."
+                        "especializado en SAT, GBM, CETES y DECLARANET."
                     )
                 },
                 {
@@ -184,9 +185,9 @@ CONSTANCIA:
 
         return response.choices[0].message.content
 
-    # -----------------------------------
+    # ---------------------------------------------------
     # PROCESAR PDF
-    # -----------------------------------
+    # ---------------------------------------------------
 
     if uploaded_file is not None:
 
@@ -204,9 +205,9 @@ CONSTANCIA:
             height=250
         )
 
-        # -----------------------------------
-        # ANALIZAR
-        # -----------------------------------
+        # ---------------------------------------------------
+        # BOTÓN ANALIZAR
+        # ---------------------------------------------------
 
         if st.button("Analizar Constancia"):
 
@@ -231,28 +232,28 @@ CONSTANCIA:
 
                 resumen = datos["resumen"]
 
-                st.subheader("🧾 Resumen SAT")
+                st.subheader("🧾 Resumen DECLARANET")
 
                 col1, col2, col3 = st.columns(3)
 
                 col1.metric(
-                    "Ingreso Acumulable",
-                    f"${resumen['ingreso_acumulable']:,.2f}"
+                    "Capital",
+                    f"${resumen['Capital']:,.2f}"
                 )
 
                 col2.metric(
-                    "ISR Acreditable",
-                    f"${resumen['isr_acreditable']:,.2f}"
+                    "Valores Bursátiles",
+                    f"${resumen['Valores Bursátiles']:,.2f}"
                 )
 
                 col3.metric(
-                    "No Acumulable",
-                    f"${resumen['no_acumulable']:,.2f}"
+                    "Bonos",
+                    f"${resumen['Bonos']:,.2f}"
                 )
 
-                # -----------------------------------
+                # ---------------------------------------------------
                 # DESCARGAR CSV
-                # -----------------------------------
+                # ---------------------------------------------------
 
                 csv = df.to_csv(
                     index=False
@@ -267,7 +268,7 @@ CONSTANCIA:
 
             except Exception as e:
 
-                st.error("Error procesando JSON")
+                st.error("Error procesando respuesta JSON")
 
                 st.write(resultado)
 
