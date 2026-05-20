@@ -82,18 +82,20 @@ if api_key:
 
         Extrae:
 
-        - interés nominal
-        - interés real
-        - ISR retenido
-        - resultado fiscal FIBRAS
-        - reembolso de capital
-        - dividendos
-        - pérdidas
+        - ACCIONES: Ganancias
+        - ACCIONES: Pérdidas
+        - ACCIONES: Resultado Neto
+        - FIBRAS: Resultado	Fiscal Distribuido	por	Fibras
+        - FIBRAS: ISR	Retenido Acreditable	por	Fibras 
+        - DIVIDENDOS NACIONALES: Dividendos	Pagados
+        - DIVIDENDOS NACIONALES: ISR Acreditable por Dividendos
+        - DIVIDENDOS EXTRANJEROS: Dividendos Pagados Extranjeras (SIC)
+        - DIVIDENDOS EXTRANJEROS: Impuesto	Retenido en	el Extranjero
 
-        Clasifica como:
-        - acumulable
-        - acreditable
-        - no acumulable
+        Clasifica para declaración de DECLARANET (después de impuestos) en:
+        - Capital
+        - Valores Búrsátiles
+        - Bonos
 
         Devuelve SOLO JSON válido.
 
@@ -108,9 +110,9 @@ if api_key:
                 }}
             ],
             "resumen": {{
-                "ingreso_acumulable": 0,
-                "isr_acreditable": 0,
-                "no_acumulable": 0
+                "Capital": 0,
+                "Valores Bursátiles": 0,
+                "Bonos": 0
             }}
         }}
 
