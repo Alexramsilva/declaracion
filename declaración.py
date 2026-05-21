@@ -83,12 +83,12 @@ if api_key:
 
         Extrae EXACTAMENTE los siguientes conceptos:
 
-        1. ACCIONES
+        ACCIONES
         - Ganancias
         - Pérdidas
         - Resultado Neto
 
-        2. INTERESES
+        INTERESES
         - Interés Nominal Gravado
         - Interés Nominal Exento
         - Total de Interés Nominal
@@ -96,19 +96,19 @@ if api_key:
         - Pérdida Real por Intereses
         - ISR Retenido Acreditable
 
-        3. FIBRAS
+        FIBRAS
         - Resultado Fiscal Distribuido por Fibras
         - ISR Retenido Acreditable por Fibras
         - Ganancia Inmuebles Fideicomitidos
         - ISR Pagado por la Fiduciaria (FIBRAS)
         - Reembolso de Capital
 
-        4. DIVIDENDOS NACIONALES
+        DIVIDENDOS NACIONALES
         - Dividendos Pagados
         - Dividendos Acumulables
         - ISR Acreditable por Dividendos
 
-        5. DIVIDENDOS EXTRANJEROS
+        DIVIDENDOS EXTRANJEROS
         - Dividendos Pagados Extranjeras (SIC)
         - Impuesto Retenido en el Extranjero
 
