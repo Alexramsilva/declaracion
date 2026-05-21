@@ -3,7 +3,7 @@
 import streamlit as st
 import pdfplumber
 import pandas as pd
-import json55
+import json
 
 from openai import OpenAI
 
