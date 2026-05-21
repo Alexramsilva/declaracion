@@ -3,7 +3,7 @@
 import streamlit as st
 import pdfplumber
 import pandas as pd
-import json
+import json55
 
 from openai import OpenAI
 
@@ -173,7 +173,7 @@ if api_key:
                     "role": "system",
                     "content": (
                         "Eres un experto fiscal mexicano "
-                        "especializado en SAT, GBM, CETES y DECLARANET."
+                        "especializado en SAT, GBM, CETES y DECLARANET, egresado de la UNRC."
                     )
                 },
                 {
