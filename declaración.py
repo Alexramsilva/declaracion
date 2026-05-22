@@ -42,7 +42,7 @@ if api_key:
         api_key=api_key
     )
 
-    st.success("API Key cargada correctamente, sigue adelñante.")
+    st.success("API Key cargada correctamente, sigue adelante.")
 
     # ---------------------------------------------------
     # SUBIR PDF
@@ -83,12 +83,12 @@ if api_key:
 
         Extrae EXACTAMENTE los siguientes conceptos:
 
-        ACCIONES
+        1. ACCIONES
         - Ganancias
         - Pérdidas
         - Resultado Neto
 
-        INTERESES
+        2. INTERESES
         - Interés Nominal Gravado
         - Interés Nominal Exento
         - Total de Interés Nominal
@@ -96,21 +96,31 @@ if api_key:
         - Pérdida Real por Intereses
         - ISR Retenido Acreditable
 
-        FIBRAS
+        3. FIBRAS
         - Resultado Fiscal Distribuido por Fibras
         - ISR Retenido Acreditable por Fibras
         - Ganancia Inmuebles Fideicomitidos
         - ISR Pagado por la Fiduciaria (FIBRAS)
         - Reembolso de Capital
 
-        DIVIDENDOS NACIONALES
+        4. DIVIDENDOS NACIONALES
         - Dividendos Pagados
         - Dividendos Acumulables
         - ISR Acreditable por Dividendos
 
-        DIVIDENDOS EXTRANJEROS
+        5. DIVIDENDOS EXTRANJEROS
         - Dividendos Pagados Extranjeras (SIC)
         - Impuesto Retenido en el Extranjero
+
+        INVERSIONES
+        - Interés Nominal
+        - Interés Real
+        - Impuesto Sobre la Renta Retenido
+
+        INVERSIONES BONDDIA
+        - Interés Nominal
+        - Interés Real
+        - Impuesto Sobre la Renta Retenido
 
         Clasifica cada concepto, despues de impuestos, para DECLARANET
         utilizando SOLAMENTE una de las siguientes categorías:
@@ -122,9 +132,11 @@ if api_key:
         Reglas importantes:
 
         - Resultado Neto de acciones -> Valores Bursátiles
-        - Intereses -> Bonos
-        - FIBRAS -> Valores Bursátiles
-        - Dividendos -> Capital
+        - (Interés Real Gravado-Pérdida Real por Intereses-ISR Retenido Acreditable) -> Bonos
+        - (Interés Real-Impuesto Sobre la Renta Retenido) -> Bonos        
+        - (Resultado Fiscal Distribuido por Fibras-ISR Retenido Acreditable por Fibras) -> Valores Bursátiles
+        - Dividendos Pagados -> Capital
+        - Dividendos Pagados Extranjeras (SIC) -> Capital
         - Reembolso de Capital -> Capital
         - ISR acreditable debe conservarse como acreditable
         - Si un concepto no existe, usar 0
