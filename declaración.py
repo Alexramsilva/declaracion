@@ -13,7 +13,7 @@ from openai import OpenAI
 st.image("UNRC.png", caption="Universidad Nacional Rosario Castellanos", width=300)
 
 st.set_page_config(
-    page_title="Asistente DECLARANET para inversionista GBM del sector público federal",
+    page_title="Plataforma RegTech basada en IA para automatizar la interpretación fiscal y patrimonial de inversiones bursátiles mexicanas orientadas al cumplimiento DECLARANET y SAT.",
     layout="wide"
 )
 
