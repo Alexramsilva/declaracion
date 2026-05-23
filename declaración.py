@@ -17,7 +17,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Plataforma RegTech basada en IA para automatizar la interpretación fiscal y patrimonial de inversiones bursátiles mexicanas orientadas al cumplimiento DECLARANET y SAT.")
+st.title("Next-generation AI RegTech platform transforming Mexican investment tax compliance into automated, DECLARANET-ready intelligence.")
 
 st.write(
     "Sube tus constancias de información fiscal de GBM"
